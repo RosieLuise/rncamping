@@ -4,7 +4,6 @@ import { Card, Icon, Rating, Input } from 'react-native-elements';
 import { connect } from 'react-redux';
 import { baseUrl } from '../shared/baseUrl';
 import { postComment, postFavorite } from '../redux/ActionCreators';
-import * as ActionTypes from './ActionTypes';
 import * as Animatable from 'react-native-animatable';
 
 const mapStateToProps = state => {
@@ -27,6 +26,8 @@ function RenderCampsite(props) {
     const view = React.createRef();
 
     const recognizeDrag = ({dx}) => (dx < -200) ? true : false;
+
+    const recognizeComment = ({dx}) => (dx > 200) ? true : false;
 
     const panResponder = PanResponder.create({
     onStartShouldSetPanResponder: () => true,
@@ -54,6 +55,9 @@ function RenderCampsite(props) {
                 ],
                 { cancelable: false }
             );
+        } else if (recognizeComment(gestureState)) {
+            props.onShowModal();
+            console.log('modal');
         }
         return true;
     }
